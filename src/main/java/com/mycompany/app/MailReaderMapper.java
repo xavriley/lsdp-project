@@ -1,4 +1,4 @@
-package enron;
+package com.mycompany.app;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

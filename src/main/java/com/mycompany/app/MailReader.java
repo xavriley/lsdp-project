@@ -1,4 +1,4 @@
-package enron;
+package com.mycompany.app;
 // MapReduce program template for initial parsing and cleansing of the Enron dataset
 //
 import java.io.IOException;

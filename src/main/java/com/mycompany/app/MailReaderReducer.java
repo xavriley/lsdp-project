@@ -1,4 +1,4 @@
-package enron;
+package com.mycompany.app;
 
 import java.io.IOException;
 import java.util.TimeZone;
