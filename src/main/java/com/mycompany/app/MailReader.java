@@ -62,6 +62,8 @@ public class MailReader extends Configured implements Tool {
 		job.setMapperClass(MailReaderMapper.class);
 		job.setReducerClass(MailReaderReducer.class);
 		// Is there any benefit in a combiner?
+		// Not really - the reducer needs to iterate over all the keys to produce output
+		// There's nothing for the combiner to do in the current implementation
 
 
 		boolean status = job.waitForCompletion(true);
