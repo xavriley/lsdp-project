@@ -139,6 +139,13 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 			//
 			// You may use EdgeWritables edgeOut to emit 
 			// an edge as a key, and noval to emit NullWritable as a value.
+			for(String recipient : recipients) {
+				edgeOut.set(0, from);
+				edgeOut.set(1, recipient);
+				edgeOut.setTS(millis);
+
+				context.write(edgeOut, noval);
+			}
 		}				
 	}
 
