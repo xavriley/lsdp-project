@@ -100,6 +100,12 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 		long millis = -1; // Date
 		for (; scanner.hasNext(); ) {
 			String line = scanner.nextLine();
+
+			// skip X- headers
+			if (line.startsWith("X-")) {
+				continue;
+			}
+
 			if (line.startsWith("From:")) {
 				from = procFrom(stripCommand(line, "From:"));
 			}
