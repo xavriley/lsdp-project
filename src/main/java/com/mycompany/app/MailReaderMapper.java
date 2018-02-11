@@ -52,11 +52,18 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 		return from;
 	}
 
-	// TODO
-	private void procRecipients(String line, List<String> recipients) {
-		// Compile a list of recipients
-		// Make sure only select Email addresses ending with
-		// @enron.com
+	public static void procRecipients(String line, List<String> recipients) {
+		if (line == null)
+			return;
+
+		// change split to no limit
+		String[] new_recipients = line.split("\\s+|,+");
+
+		for (int i = 0; i < new_recipients.length; i++) {
+			if (new_recipients[i].matches(".+@enron\\.com")) {
+				recipients.add(new_recipients[i]);
+			}
+		}
 	}
 	
 	// This method will return the date timestamp
