@@ -6,6 +6,10 @@ import junit.framework.TestSuite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.csv.*;
 
 /**
  * Unit test for simple App.
@@ -36,11 +40,19 @@ public class MailReaderMapperTest
      */
     public void testProcRecipients()
     {
-	ArrayList<String> testRecipients = new ArrayList<String>();
+	    ArrayList<String> testRecipients = new ArrayList<String>();
 
-        MailReaderMapper.procRecipients("foo@example.com, george.mcclellan@enron.com, daniel.reck@enron.com, stuart.staley@enron.com, \n\tmichael.beyer@enron.com, bar@example.com, kevin.mcgowan@enron.com,\n\tjeffrey.shankman@enron.com, mike.mcconnell@enron.com,\n\tbaz@example.com, paula.harris@enron.com", testRecipients);
-	
-	// System.out.println(String.join(", ", testRecipients));
-       	assertTrue(testRecipients.size() == 8);
+	    MailReaderMapper.procRecipients("foo@example.com, george.mcclellan@enron.com, daniel.reck@enron.com, stuart.staley@enron.com, \n\tmichael.beyer@enron.com, bar@example.com, kevin.mcgowan@enron.com,\n\tjeffrey.shankman@enron.com, mike.mcconnell@enron.com,\n\tbaz@example.com, paula.harris@enron.com", testRecipients);
+
+	    // System.out.println(String.join(", ", testRecipients));
+	    assertTrue(testRecipients.size() == 8);
+    }
+
+    public void testCSVRead() throws IOException
+    {
+	    List<CSVRecord> testPositions;
+	    testPositions = MailReaderMapper.readEmployeePositions();
+
+	    assertTrue(testPositions.size() == 160);
     }
 }

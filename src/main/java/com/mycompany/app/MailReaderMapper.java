@@ -1,7 +1,11 @@
 package com.mycompany.app;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +18,8 @@ import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
+
+import org.apache.commons.csv.*;
 
 class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWritable> {
 
@@ -83,10 +89,22 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	}
 	
 
+	public static List<CSVRecord> readEmployeePositions() throws IOException {
+		// input is small in this case so an input stream isn't required
+		ClassLoader classLoader = new MailReaderMapper().getClass().getClassLoader();
+		File file = new File(classLoader.getResource("full-positions.csv").getFile());
+		String in = new String(Files.readAllBytes(file.toPath()));
+
+		CSVParser parser = new CSVParser(new StringReader(in), CSVFormat.DEFAULT.withFirstRecordAsHeader());
+		List<CSVRecord> list = parser.getRecords();
+
+		//TODO replace CSV with HashMap
+		return list;
+	}
 
 	@Override
 	public void setup(Context context) throws IOException,  InterruptedException {
-		
+		// read in full-positions.csv
 	}
 
 	@Override
@@ -138,13 +156,6 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 			// is false. This is a useful debugging practice.
 			assert(from.endsWith("@enron.com")); 
 
-			// TODO
-			// Add your code to emit outgoing edges
-			// (sender, recipient, timestamp). 
-			// The edges should be emitted as keys, the values are NullWritables.
-			//
-			// You may use EdgeWritables edgeOut to emit 
-			// an edge as a key, and noval to emit NullWritable as a value.
 			for(String recipient : recipients) {
 
 				if(from != recipient) { // eliminate self-loops
