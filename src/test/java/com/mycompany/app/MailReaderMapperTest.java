@@ -46,7 +46,7 @@ public class MailReaderMapperTest
 	    MailReaderMapper.procRecipients("foo@example.com, george.mcclellan@enron.com, daniel.reck@enron.com, stuart.staley@enron.com, \n\tmichael.beyer@enron.com, bar@example.com, kevin.mcgowan@enron.com,\n\tjeffrey.shankman@enron.com, mike.mcconnell@enron.com,\n\tbaz@example.com, paula.harris@enron.com", testRecipients);
 
 	    // System.out.println(String.join(", ", testRecipients));
-	    assertTrue(testRecipients.size() == 8);
+	    assertEquals(8, testRecipients.size());
     }
 
     public void testCSVRead() throws IOException
