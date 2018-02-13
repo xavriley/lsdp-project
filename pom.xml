@@ -33,11 +33,11 @@
     <artifactId>hadoop-hdfs</artifactId>
     <version>2.6.3</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
     <dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-text</artifactId>
-    <version>1.2</version>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-csv</artifactId>
+	    <version>1.5</version>
     </dependency>
   </dependencies>
   <build>
