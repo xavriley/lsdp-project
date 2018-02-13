@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class MailReaderMapperTest
 
     public void testCSVRead() throws IOException
     {
-	    List<CSVRecord> testPositions;
+	    HashMap<String, String> testPositions;
 	    testPositions = MailReaderMapper.readEmployeePositions();
 
 	    assertTrue(testPositions.size() == 160);

@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TimeZone;
@@ -89,17 +90,24 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	}
 	
 
-	public static List<CSVRecord> readEmployeePositions() throws IOException {
+	public static HashMap<String, String> readEmployeePositions() throws IOException {
+		HashMap<String, String> positions = new HashMap<String, String>();
+
 		// input is small in this case so an input stream isn't required
 		ClassLoader classLoader = new MailReaderMapper().getClass().getClassLoader();
 		File file = new File(classLoader.getResource("full-positions.csv").getFile());
 		String in = new String(Files.readAllBytes(file.toPath()));
 
 		CSVParser parser = new CSVParser(new StringReader(in), CSVFormat.DEFAULT.withFirstRecordAsHeader());
-		List<CSVRecord> list = parser.getRecords();
 
-		//TODO replace CSV with HashMap
-		return list;
+		for (CSVRecord record : parser) {
+			// TODO add other emails
+			if(record.get("Email1").toString() != "") {
+				positions.put(record.get("Email1").toString(), record.get("Id").toString());
+			};
+		}
+
+		return positions;
 	}
 
 	@Override
