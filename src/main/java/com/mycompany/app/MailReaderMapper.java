@@ -16,13 +16,13 @@ import java.util.Scanner;
 import java.util.TimeZone;
 
 import org.apache.hadoop.io.BytesWritable;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import org.apache.commons.csv.*;
 
-class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWritable> {
+class MailReaderMapper extends Mapper<IntWritable, BytesWritable, EdgeWritable, NullWritable> {
 
 	private final EdgeWritable edgeOut = new EdgeWritable();
 	private final EdgeWritable edgeIn = new EdgeWritable();
@@ -122,7 +122,7 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	}
 
 	@Override
-	public void map(Text key, BytesWritable value, Context context)
+	public void map(IntWritable key, BytesWritable value, Context context)
 			throws IOException, InterruptedException {
 
 		byte[] bytes = value.getBytes();
@@ -173,8 +173,8 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 			for(String recipient : recipients) {
 
 				if(from != recipient) { // eliminate self-loops
-					edgeOut.set(0, from);
-					edgeOut.set(1, recipient);
+					edgeOut.set(0, new IntWritable(email_to_id_lookup.get(from)));
+					edgeOut.set(1, new IntWritable(email_to_id_lookup.get(recipient)));
 					edgeOut.setTS(millis);
 
 					context.write(edgeOut, noval);

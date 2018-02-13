@@ -4,13 +4,13 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.WritableComparable;
 
 
 public class EdgeWritable  implements WritableComparable<EdgeWritable> {
 
-	private Text[] vxs = new Text[] {new Text(), new Text()}; 
+	private IntWritable[] vxs = new IntWritable[] {new IntWritable(), new IntWritable()}; 
 	private LongWritable timestamp = new LongWritable();
 
 	public EdgeWritable() {
@@ -37,15 +37,15 @@ public class EdgeWritable  implements WritableComparable<EdgeWritable> {
 		timestamp.write(out);
 	}
 
-	public String get(int i) {
-		return vxs[i].toString();
+	public int get(int i) {
+		return vxs[i];
 	}
 
 	public long getTS() {
 		return timestamp.get();
 	}
 
-	public void set(int i, String w) {
+	public void set(int i, IntWritable w) {
 		vxs[i].set(w);
 	}
 
@@ -55,7 +55,7 @@ public class EdgeWritable  implements WritableComparable<EdgeWritable> {
 
 	@Override
 	public String toString() {
-		return vxs[0] + "\t" + vxs[1] + "\t" + timestamp.get();
+		return vxs[0].toString() + "\t" + vxs[1].toString() + "\t" + timestamp.get();
 	}
 
 	@Override
