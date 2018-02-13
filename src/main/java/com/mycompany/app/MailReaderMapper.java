@@ -28,6 +28,7 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	private final EdgeWritable edgeIn = new EdgeWritable();
 	private final NullWritable noval = NullWritable.get();
 	private final Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("Etc/UTC"));
+	private HashMap<String, Integer> email_to_id_lookup = new HashMap<String, Integer>();
 
 
 	private String stripCommand(String line, String com) {
@@ -116,7 +117,8 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 
 	@Override
 	public void setup(Context context) throws IOException,  InterruptedException {
-		// read in full-positions.csv
+		// extract method for easier testing
+		email_to_id_lookup = readEmployeePositions();
 	}
 
 	@Override
