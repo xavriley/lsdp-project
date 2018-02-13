@@ -104,9 +104,8 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 			String[] fields = {"Email1", "Email2", "Email3", "Email4"};
 			for (String field : fields) {
 				if(record.get(field) != null && record.get(field).toString().trim().length() != 0) {
-					if(Integer.parseInt(record.get("Id").toString()) == 160) {
-					  System.out.println(record.get(field));
-					}
+					// at the moment we are only interested in the Id for a given email
+					// future iterations may return a more complex data object
 					positions.put(record.get(field).toString(), Integer.parseInt(record.get("Id").toString()));
 				};
 			}
