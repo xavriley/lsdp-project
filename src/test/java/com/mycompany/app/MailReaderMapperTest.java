@@ -51,9 +51,12 @@ public class MailReaderMapperTest
 
     public void testCSVRead() throws IOException
     {
-	    HashMap<String, String> testPositions;
+	    HashMap<String, Integer> testPositions;
 	    testPositions = MailReaderMapper.readEmployeePositions();
 
-	    assertTrue(testPositions.size() == 160);
+	    assertEquals(314, testPositions.size());
+	    assertEquals(28, (int)testPositions.get("darrell.schoolcraft@enron.com"));
+	    // check that empty strings aren't used as keys
+	    assertEquals(null, testPositions.get(""));
     }
 }

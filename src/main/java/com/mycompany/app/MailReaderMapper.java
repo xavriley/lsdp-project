@@ -90,8 +90,8 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	}
 	
 
-	public static HashMap<String, String> readEmployeePositions() throws IOException {
-		HashMap<String, String> positions = new HashMap<String, String>();
+	public static HashMap<String, Integer> readEmployeePositions() throws IOException {
+		HashMap<String, Integer> positions = new HashMap<String, Integer>();
 
 		// input is small in this case so an input stream isn't required
 		ClassLoader classLoader = new MailReaderMapper().getClass().getClassLoader();
@@ -101,10 +101,15 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 		CSVParser parser = new CSVParser(new StringReader(in), CSVFormat.DEFAULT.withFirstRecordAsHeader());
 
 		for (CSVRecord record : parser) {
-			// TODO add other emails
-			if(record.get("Email1").toString() != "") {
-				positions.put(record.get("Email1").toString(), record.get("Id").toString());
-			};
+			String[] fields = {"Email1", "Email2", "Email3", "Email4"};
+			for (String field : fields) {
+				if(record.get(field) != null && record.get(field).toString().trim().length() != 0) {
+					if(Integer.parseInt(record.get("Id").toString()) == 160) {
+					  System.out.println(record.get(field));
+					}
+					positions.put(record.get(field).toString(), Integer.parseInt(record.get("Id").toString()));
+				};
+			}
 		}
 
 		return positions;
