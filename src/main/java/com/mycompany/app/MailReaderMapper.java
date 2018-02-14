@@ -173,8 +173,8 @@ class MailReaderMapper extends Mapper<IntWritable, BytesWritable, EdgeWritable, 
 			for(String recipient : recipients) {
 
 				if(from != recipient) { // eliminate self-loops
-					edgeOut.set(0, new IntWritable(email_to_id_lookup.get(from)));
-					edgeOut.set(1, new IntWritable(email_to_id_lookup.get(recipient)));
+					edgeOut.set(0, email_to_id_lookup.get(from));
+					edgeOut.set(1, email_to_id_lookup.get(recipient));
 					edgeOut.setTS(millis);
 
 					context.write(edgeOut, noval);

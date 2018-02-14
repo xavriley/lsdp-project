@@ -18,8 +18,8 @@ public class EdgeWritable  implements WritableComparable<EdgeWritable> {
 	}
 
 	public EdgeWritable(EdgeWritable ew) {
-		vxs[0].set(ew.vxs[0]);
-		vxs[1].set(ew.vxs[1]);
+		vxs[0].set(ew.vxs[0].get());
+		vxs[1].set(ew.vxs[1].get());
 		timestamp.set(ew.timestamp.get());
 	}
 
@@ -38,14 +38,14 @@ public class EdgeWritable  implements WritableComparable<EdgeWritable> {
 	}
 
 	public int get(int i) {
-		return vxs[i];
+		return vxs[i].get();
 	}
 
 	public long getTS() {
 		return timestamp.get();
 	}
 
-	public void set(int i, IntWritable w) {
+	public void set(int i, int w) {
 		vxs[i].set(w);
 	}
 
