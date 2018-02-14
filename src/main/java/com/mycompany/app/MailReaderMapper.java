@@ -18,11 +18,12 @@ import java.util.TimeZone;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
 import org.apache.commons.csv.*;
 
-class MailReaderMapper extends Mapper<IntWritable, BytesWritable, EdgeWritable, NullWritable> {
+class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWritable> {
 
 	private final EdgeWritable edgeOut = new EdgeWritable();
 	private final EdgeWritable edgeIn = new EdgeWritable();
@@ -122,7 +123,7 @@ class MailReaderMapper extends Mapper<IntWritable, BytesWritable, EdgeWritable, 
 	}
 
 	@Override
-	public void map(IntWritable key, BytesWritable value, Context context)
+	public void map(Text key, BytesWritable value, Context context)
 			throws IOException, InterruptedException {
 
 		byte[] bytes = value.getBytes();
