@@ -58,5 +58,6 @@ public class MailReaderMapperTest
 	    assertEquals(28, (int)testPositions.get("darrell.schoolcraft@enron.com"));
 	    // check that empty strings aren't used as keys
 	    assertEquals(null, testPositions.get(""));
+	    assertEquals(null, testPositions.get("Francois.Badenhorst@eskom.co.za"));
     }
 }
