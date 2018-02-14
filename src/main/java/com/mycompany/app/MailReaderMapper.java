@@ -175,16 +175,19 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 				Integer from_id = email_to_id_lookup.get(from);
 				Integer recipient_id = email_to_id_lookup.get(recipient);
 
-				// eliminate self-loops
-				if(from != recipient) {
-					{ // ensure each edge is in full-positions.csv
-					if(from_id != null && recipient_id != null)
-						edgeOut.set(0, from_id);
-						edgeOut.set(1, recipient_id);
-						edgeOut.setTS(millis);
+				if(from_id == null || recipient_id == null) {
+					// ensure each edge is in full-positions.csv
+					continue;
+				} else if(from == recipient) {
+					// eliminate self-loops
+					continue;
+				} else {
+					// all fine - proceed to emit edge
+					edgeOut.set(0, from_id);
+					edgeOut.set(1, recipient_id);
+					edgeOut.setTS(millis);
 
-						context.write(edgeOut, noval);
-					}
+					context.write(edgeOut, noval);
 				}
 			}
 		}				
