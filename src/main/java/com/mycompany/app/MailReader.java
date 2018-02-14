@@ -65,7 +65,6 @@ public class MailReader extends Configured implements Tool {
 		// Not really - the reducer needs to iterate over all the keys to produce output
 		// There's nothing for the combiner to do in the current implementation
 
-
 		boolean status = job.waitForCompletion(true);
 		return status ? 0 : 1;
 	}
