@@ -9,11 +9,13 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 import java.util.TimeZone;
+import java.text.SimpleDateFormat;
 
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.IntWritable;
@@ -29,6 +31,14 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	private final EdgeWritable edgeIn = new EdgeWritable();
 	private final NullWritable noval = NullWritable.get();
 	private final Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("Etc/UTC"));
+
+	private final SimpleDateFormat filterSdf = new SimpleDateFormat("yyyy-MM-dd");
+
+	private Date startDate;
+	private Date endDate;
+	private final Calendar startCal = new GregorianCalendar(TimeZone.getTimeZone("Etc/UTC"));
+	private final Calendar endCal = new GregorianCalendar(TimeZone.getTimeZone("Etc/UTC"));
+
 	private HashMap<String, Integer> email_to_id_lookup = new HashMap<String, Integer>();
 
 
@@ -79,16 +89,21 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	// of an email as number of milliseconds since 
 	// the beginning of epoch in UTC.
 	private long procDate(String stripCommand) {
-		// System.out.println("stripCommand=" + stripCommand);
-		try {
+		System.out.println("date1 : " + filterSdf.format(startDate));
+		System.out.println("date2 : " + filterSdf.format(endDate));
 
+		try {
 			cal.setTime(MailReader.sdf.parse(stripCommand.trim()));
-							
 		} catch (ParseException e) {
 			return -1;
 		}
-		return (cal.get(Calendar.YEAR) >= 1998 && cal.get(Calendar.YEAR) <= 2002) ?
-				cal.getTimeInMillis() : -1;
+
+		// filter emails to include those between start and end dates
+		if (cal.after(startDate) && cal.before(endDate)) {
+			return cal.getTimeInMillis();
+		} else {
+			return -1;
+		}
 	}
 	
 
@@ -120,6 +135,16 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 	public void setup(Context context) throws IOException,  InterruptedException {
 		// extract method for easier testing
 		email_to_id_lookup = readEmployeePositions();
+
+		// setup date filtering
+		try {
+			startDate = filterSdf.parse("1998-10-01");
+			endDate = filterSdf.parse("2002-07-31");
+		} catch (ParseException e) {
+			throw new RuntimeException("Invalid start/end dates", e);
+		}
+		startCal.setTime(startDate);
+		endCal.setTime(endDate);
 	}
 
 	@Override
