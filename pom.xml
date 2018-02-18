@@ -4,7 +4,7 @@
 	<groupId>com.mycompany.app</groupId>
 	<artifactId>enron-project</artifactId>
 	<packaging>jar</packaging>
-	<version>2.0-SNAPSHOT</version>
+	<version>3.0-SNAPSHOT</version>
 	<name>enron-project</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
