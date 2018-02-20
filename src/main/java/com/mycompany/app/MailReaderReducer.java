@@ -16,7 +16,7 @@ class MailReaderReducer extends Reducer<EdgeWritable, NullWritable, NullWritable
 
 	private final Text out = new Text();
 	private final NullWritable noval = NullWritable.get();
-	private final SimpleDateFormat dateOutputKey = new SimpleDateFormat("MM-yyyy");
+	private final SimpleDateFormat dateOutputKey = new SimpleDateFormat("yyyy-MM");
 	private MultipleOutputs<NullWritable, Text> multipleOutputs;
 
 	// The setup method. Anything in here will be run exactly once before the
