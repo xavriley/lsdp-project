@@ -99,7 +99,7 @@ class MailReaderMapper extends Mapper<Text, BytesWritable, EdgeWritable, NullWri
 		}
 
 		// filter emails to include those between start and end dates
-		if (cal.after(startDate) && cal.before(endDate)) {
+		if (cal.after(startCal) && cal.before(endCal)) {
 			return cal.getTimeInMillis();
 		} else {
 			return -1;
