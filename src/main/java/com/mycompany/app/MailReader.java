@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -66,6 +67,20 @@ public class MailReader extends Configured implements Tool {
 		// There's nothing for the combiner to do in the current implementation
 
 		boolean status = job.waitForCompletion(true);
+
+		// approach to rename output files to CSV
+		// adapted from https://stackoverflow.com/a/36781622
+		if (status) {
+			FileSystem hdfs = FileSystem.get(getConf());
+			FileStatus fstatus[] = hdfs.listStatus(new Path(args[1] + "/byMonth/"));
+			if (fstatus != null){
+				for (FileStatus aFile : fstatus) {
+					if (!aFile.isDir()) {
+						hdfs.rename(aFile.getPath(), new Path(aFile.getPath().toString()+".csv"));
+					}
+				}
+			}
+		}
 		return status ? 0 : 1;
 	}
 
