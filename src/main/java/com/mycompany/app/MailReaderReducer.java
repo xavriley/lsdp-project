@@ -34,7 +34,7 @@ class MailReaderReducer extends Reducer<EdgeWritable, NullWritable, NullWritable
 		
 		String dateKey = dateOutputKey.format(key.getTS());
 		out.set(key.get(0) + "," + key.get(1));
-		multipleOutputs.write(noval, out, dateKey);
+		multipleOutputs.write(noval, out, "byMonth/" + dateKey);
 	}
 
 	// The cleanup method. Anything in here will be run exactly once after the
