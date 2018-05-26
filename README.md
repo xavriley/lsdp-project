@@ -3,6 +3,15 @@
 ```
 hdfs dfs -put /home/local/mdac073/enron20.seq enron/enron20.seq
 
+# without maven
+wget http://central.maven.org/maven2/org/apache/commons/commons-csv/1.5/commons-csv-1.5.jar # note location for later
+cd src/main/java/com/mycompany/app/
+mkdir q2_classes
+javac -classpath /usr/hdp/2.6.3.0-235/hadoop/hadoop-common.jar:/usr/hdp/2.6.3.0-235/hadoop/client/hadoop-mapreduce-client-core.jar:/usr/hdp/2.6.3.0-235/hadoop/lib/commons-cli-1.2.jar:/home/local/mdac073/commons-text-1.2.jar:/home/local/mdac073/commons-csv-1.5.jar -d q2_classes *.java
+jar -cvf q2.jar -C q2_classes/ .
+hadoop jar q2.jar com.mycompany.app.MailReader -files ~/LSDP/enron-project/src/main/resources/full-positions.csv -libjars /home/local/mdac073/commons-text-1.2.jar,/home/local/mdac073/commons-csv-1.5.jar enron/enron20.seq enron_output
+
+
 mvn package
 hadoop jar target/enron-project-1.0-SNAPSHOT.jar enron/enron20.seq enron_output
 hdfs dfs -cat enron_output/part-r-00000
